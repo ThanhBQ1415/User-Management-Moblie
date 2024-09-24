@@ -10,11 +10,13 @@ import android.widget.Toast;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.B21DCVT398.test.dbConnect.MyDatabaseManager;
 import com.B21DCVT398.test.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,13 +35,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static List<User> userList = new ArrayList<>();
-     static {
-    userList.add(new User("B21DCVT398", "1", "Bui Quang Thanh", "thanh@gmail.com"));
-    userList.add(new User("thanh1", "1", "thanh", "thanh@gmail.com"));
-    userList.add(new User("thanh2", "1", "thanh", "thanh@gmail.com"));
-    userList.add(new User("thanh3", "1", "thanh", "thanh@gmail.com"));
-    userList.add(new User("thanh4", "1", "thanh", "thanh@gmail.com"));
-}
+
+    static {
+        userList.add(new User("B21DCVT398", "1", "Bui Quang Thanh", "thanh@gmail.com", "0123456789", "2000-01-01", "nam"));
+        userList.add(new User("thanh1", "1", "Thanh Nguyen", "thanh1@gmail.com", "0987654321", "1995-05-10", "nam"));
+        userList.add(new User("thanh2", "1", "Thanh Le", "thanh2@gmail.com", "0111222333", "1998-03-15", "nam"));
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
-//        MyDatabaseManager mydatabasemanager = new MyDatabaseManager(this);
-//        mydatabasemanager.open();
+        MyDatabaseManager mydatabasemanager = new MyDatabaseManager(this);
+        mydatabasemanager.open();
 
-//        User user=new User("B21DCVT398","1","Bui Quang Thanh","buithanh29117@gmail.com");
+        User user=new User("B21DCVT398", "1", "Bui Quang Thanh", "thanh@gmail.com", "0123456789", "2000-01-01", "nam");
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -99,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public static void updateUser(User user) {
-        for (User u : userList) if (u.getUsername().equals(user.getUsername())) u.update(user.getPassword(), user.getFullname(), user.getEmail());
-    }
+//    public static void updateUser(User user) {
+//        for (User u : userList) if (u.getUsername().equals(user.getUsername())) u.update(user.getPassword(), user.getFullname(), user.getEmail());
+//    }
     public static void deleteUserByUsername(String username) {
         Iterator<User> iterator = userList.iterator();
 

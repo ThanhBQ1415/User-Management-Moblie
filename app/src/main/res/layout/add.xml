@@ -48,7 +48,48 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="10dp" />
+
+    <!-- New Phone input field -->
+    <EditText
+        android:id="@+id/phone_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone"
+        android:inputType="phone"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- New Date of Birth input field -->
+    <EditText
+        android:id="@+id/dob_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date of Birth (YYYY-MM-DD)"
+        android:inputType="date"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- New Gender selection (RadioGroup) -->
+    <RadioGroup
+        android:id="@+id/gender_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/gender_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nam" />
+
+        <RadioButton
+            android:id="@+id/gender_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nữ" />
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -38,17 +38,17 @@ public class WelcomeActivity extends AppCompatActivity {
                }
             });
 
-
-            edituserbutton = findViewById(R.id.edit_user_button);
-            edituserbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent2 = new Intent(WelcomeActivity.this, Edituser.class);
-                    intent2.putExtra("OPERATION", "Edit");
-                    intent2.putExtra("USERNAME", username);
-                    startActivity(intent2);
-                  }
-                });
+//
+//            edituserbutton = findViewById(R.id.edit_user_button);
+//            edituserbutton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent2 = new Intent(WelcomeActivity.this, Edituser.class);
+//                    intent2.putExtra("OPERATION", "Edit");
+//                    intent2.putExtra("USERNAME", username);
+//                    startActivity(intent2);
+//                  }
+//                });
 
 
 

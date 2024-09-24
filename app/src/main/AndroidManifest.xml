@@ -16,7 +16,7 @@
         <activity android:name=".dbConnect.MyDatabaseHelper"></activity>
         <activity android:name=".dbConnect.MyDatabaseManager"></activity>
         <activity android:name=".Adduser"></activity>
-        <activity android:name=".Edituser"></activity>
+<!--        <activity android:name=".Edituser"></activity>-->
         <activity android:name=".Deleteuser"></activity>
 
         <activity

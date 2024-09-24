@@ -8,16 +8,28 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
     private static final int DATABASE_VERSION = 2;
 
-    // Tên bảng và cột
+    // Table and column names
     private static final String TABLE_USER = "user";
+    private static final String COLUMN_ID = "id";
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_DOB = "dob";
+    private static final String COLUMN_GENDER = "gender";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PHONE = "phone";
 
-    // Câu lệnh SQL để tạo bảng
+    // SQL to create the user table
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_USER + " (" +
-                    COLUMN_USERNAME + " TEXT PRIMARY KEY, " +
-                    COLUMN_PASSWORD + " TEXT" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +  // Auto-increment ID
+                    COLUMN_USERNAME + " TEXT UNIQUE, " +  // Unique username
+                    COLUMN_PASSWORD + " TEXT, " +
+                    COLUMN_NAME + " TEXT, " +
+                    COLUMN_DOB + " DATETIME, " +  // Date of birth
+                    COLUMN_GENDER + " TEXT, " +
+                    COLUMN_EMAIL + " TEXT, " +
+                    COLUMN_PHONE + " TEXT" +
                     ");";
 
     public MyDatabaseHelper(Context context) {

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">test</string>
+    <string-array name="gender_array">
+        <item>nam</item>
+        <item>nữ</item>
+    </string-array>
 </resources>

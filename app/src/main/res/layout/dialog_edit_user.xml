@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Username Input -->
     <EditText
         android:id="@+id/username_input"
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         android:padding="10dp"
         android:layout_marginBottom="10dp" />
 
+    <!-- Password Input -->
     <EditText
         android:id="@+id/password_input"
         android:layout_width="match_parent"
@@ -23,6 +25,7 @@
         android:padding="10dp"
         android:layout_marginBottom="10dp" />
 
+    <!-- Full Name Input -->
     <EditText
         android:id="@+id/fullname_input"
         android:layout_width="match_parent"
@@ -32,6 +35,7 @@
         android:padding="10dp"
         android:layout_marginBottom="10dp" />
 
+    <!-- Email Input -->
     <EditText
         android:id="@+id/email_input"
         android:layout_width="match_parent"
@@ -39,6 +43,34 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Phone Input -->
+    <EditText
+        android:id="@+id/phone_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone"
+        android:inputType="phone"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Date of Birth Input (Non-editable) -->
+    <EditText
+        android:id="@+id/dob_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date of Birth"
+        android:focusable="false"
+        android:clickable="true"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Gender Spinner -->
+    <Spinner
+        android:id="@+id/gender_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" />
 
 </LinearLayout>
