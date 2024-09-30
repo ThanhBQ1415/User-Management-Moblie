@@ -272,16 +272,17 @@ public class Deleteuser extends AppCompatActivity {
         alertDialog.show();
     }
 
-    // Delete a user from the database
-    private void deleteUser(User user) {
-        dbManager.deleteUser(user.getUsername());  // Delete the user by username
-        displayAllUsers();  // Refresh the list after deletion
-        Toast.makeText(this, "User deleted successfully", Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         dbManager.close();  // Close the database when activity is destroyed
     }
+//    // Delete a user from the database
+//    private void deleteUser(User user) {
+//        dbManager.deleteUser(user.getUsername());  // Delete the user by username
+//        displayAllUsers();  // Refresh the list after deletion
+//        Toast.makeText(this, "User deleted successfully", Toast.LENGTH_SHORT).show();
+//    }
 }
