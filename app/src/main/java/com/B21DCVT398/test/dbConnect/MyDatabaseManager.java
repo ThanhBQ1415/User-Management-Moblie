@@ -6,9 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.B21DCVT398.test.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyDatabaseManager {
     private SQLiteDatabase database;
@@ -34,18 +34,19 @@ public class MyDatabaseManager {
         values.put("username", user.getUsername());
         values.put("password", user.getPassword());
         values.put("name", user.getFullname());
-        values.put("dob", user.getDob());
-        values.put("gender", user.getGender());
         values.put("email", user.getEmail());
         values.put("phone", user.getPhone());
+        values.put("dob", user.getDob());
+        values.put("gender", user.getGender());
+
         return database.insert("user", null, values);
     }
 
-    // Get user by username
+    // Get user by username from the database
     public User getUser(String username) {
         Cursor cursor = database.query(
                 "user",
-                new String[]{"username", "password", "name", "dob", "gender", "email", "phone"},
+                new String[]{"username", "password", "name", "email", "phone", "dob", "gender"},
                 "username = ?",
                 new String[]{username},
                 null,
@@ -56,28 +57,25 @@ public class MyDatabaseManager {
         if (cursor != null && cursor.moveToFirst()) {
             @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
-            @SuppressLint("Range") String dob = cursor.getString(cursor.getColumnIndex("dob"));
-            @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex("gender"));
-            @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("email"));
-            @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex("phone"));
-            cursor.close();
-            return new User(username, password, name, dob, gender, email, phone); // Ensure the User constructor can handle these fields
+            @SuppressLint("Range") String dob = cursor.getString(cursor.getColumnIndex("email"));
+            @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex("phone"));
+            @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("dob"));
+            @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex("gender"));
+            cursor.close();  // Close the cursor after reading
+
+            // Return the user object
+            return new User(username, password, name, email, phone, dob, gender);
         }
 
-        return null;
+        return null; // Return null if no user is found
     }
 
-    // Delete user by username
-    public void deleteUser(String username) {
-        database.delete("user", "username = ?", new String[]{username});
-    }
-
-    // Print all users
-    public void printAllUsers() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(
+    // Get all users from the database
+    public List<User> getAllUsers() {
+        List<User> userList = new ArrayList<>();
+        Cursor cursor = database.query(
                 "user",
-                new String[]{"username", "password", "name", "dob", "gender", "email", "phone"},
+                new String[]{"username", "password", "name", "email", "phone", "dob", "gender"},
                 null,
                 null,
                 null,
@@ -90,17 +88,36 @@ public class MyDatabaseManager {
                 @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex("username"));
                 @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
-                @SuppressLint("Range") String dob = cursor.getString(cursor.getColumnIndex("dob"));
-                @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex("gender"));
-                @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("email"));
-                @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex("phone"));
+                @SuppressLint("Range") String dob = cursor.getString(cursor.getColumnIndex("email"));
+                @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex("phone"));
+                @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("dob"));
+                @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex("gender"));
 
-                // Log user details
-                Log.d("DatabaseContent", "Username: " + username + ", Password: " + password +
-                        ", Name: " + name + ", DOB: " + dob + ", Gender: " + gender +
-                        ", Email: " + email + ", Phone: " + phone);
+                // Add each user to the userList
+                userList.add(new User(username, password, name, email, phone, dob, gender));
             }
-            cursor.close();
+            cursor.close();  // Close the cursor after reading
         }
+
+        return userList;
+    }
+
+    // Update user information in the database
+    public int updateUser(User user) {
+        ContentValues values = new ContentValues();
+        values.put("password", user.getPassword());
+        values.put("name", user.getFullname());
+        values.put("email", user.getDob());
+        values.put("phone", user.getGender());
+        values.put("dob", user.getEmail());
+        values.put("gender", user.getPhone());
+
+        // Update the user with the matching username
+        return database.update("user", values, "username = ?", new String[]{user.getUsername()});
+    }
+
+    // Delete user by username from the database
+    public void deleteUser(String username) {
+        database.delete("user", "username = ?", new String[]{username});
     }
 }

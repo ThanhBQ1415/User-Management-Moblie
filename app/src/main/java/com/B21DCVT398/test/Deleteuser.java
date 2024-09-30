@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.B21DCVT398.test.dbConnect.MyDatabaseManager;
 import com.B21DCVT398.test.model.User;
 
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ public class Deleteuser extends AppCompatActivity {
     private Button searchButton;
     private LinearLayout resultContainer;
     private Button home;
+    private MyDatabaseManager dbManager;  // Declare MyDatabaseManager instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,10 @@ public class Deleteuser extends AppCompatActivity {
         searchButton = findViewById(R.id.button_search);
         resultContainer = findViewById(R.id.resultContainer);
         home = findViewById(R.id.welcome_activity);
+
+        // Initialize the MyDatabaseManager
+        dbManager = new MyDatabaseManager(this);
+        dbManager.open();  // Open the database
 
         displayAllUsers();  // Display all users when the activity starts
 
@@ -66,25 +71,25 @@ public class Deleteuser extends AppCompatActivity {
         });
     }
 
-    // Display all users
+    // Display all users from SQLite
     private void displayAllUsers() {
-        displayResults(MainActivity.userList);
+        List<User> allUsers = dbManager.getAllUsers();  // Fetch all users from the database
+        displayResults(allUsers);
     }
 
-    // Search for users by username
+    // Search for users by username from SQLite
     private void searchUser(String username) {
+        User matchedUser = dbManager.getUser(username);  // Fetch the user by username
         List<User> matchedUsers = new ArrayList<>();
 
-        for (User user : MainActivity.userList) {
-            if (user.getUsername().contains(username)) {
-                matchedUsers.add(user);
-            }
+        if (matchedUser != null) {
+            matchedUsers.add(matchedUser);  // If a user is found, add to the list
         }
 
         if (!matchedUsers.isEmpty()) {
-            displayResults(matchedUsers);
+            displayResults(matchedUsers);  // Display found users
         } else {
-            displayNoResults();
+            displayNoResults();  // Display no result message
         }
     }
 
@@ -151,7 +156,7 @@ public class Deleteuser extends AppCompatActivity {
         resultContainer.addView(noResultTextView);
     }
 
-    // Confirm edit or deletion of a user
+    // Confirm delete or edit user dialog
     private void confirmDeleteOrEditUser(User user) {
         new AlertDialog.Builder(this)
                 .setTitle("User Options")
@@ -238,36 +243,28 @@ public class Deleteuser extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setTitle("Edit User");
+        // Set up save button
         dialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Get the edited information
-                String newUsername = usernameEditText.getText().toString();
-                String newPassword = passwordEditText.getText().toString();
+                // Save edited user data
+                user.setUsername(usernameEditText.getText().toString().trim());
+                user.setPassword(passwordEditText.getText().toString().trim());
+                user.setFullname(fullnameEditText.getText().toString().trim());
+                user.setEmail(emailEditText.getText().toString().trim());
+                user.setPhone(phoneEditText.getText().toString().trim());
+                user.setDob(dobInput.getText().toString().trim());
+                user.setGender(genderSpinner.getSelectedItem().toString());
 
-                String newFullname = fullnameEditText.getText().toString();
-                String newEmail = emailEditText.getText().toString();
-                String newPhone = phoneEditText.getText().toString();
-                String newDob = dobInput.getText().toString();
-                String newGender = genderSpinner.getSelectedItem().toString();
-
-                // Update user information
-                user.setUsername(newUsername);
-                user.setPassword(newPassword);
-                user.setFullname(newFullname);
-                user.setEmail(newEmail);
-                user.setPhone(newPhone);
-                user.setDob(newDob);
-                user.setGender(newGender);
-
-                Toast.makeText(Deleteuser.this, "User information updated", Toast.LENGTH_SHORT).show();
-                displayAllUsers();  // Refresh the user list
+                // Update user in database
+                dbManager.updateUser(user);
+                displayAllUsers();  // Refresh user list after update
+                Toast.makeText(Deleteuser.this, "User updated successfully", Toast.LENGTH_SHORT).show();
             }
         });
 
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
+                // Cancel the dialog
             }
         });
 
@@ -275,10 +272,16 @@ public class Deleteuser extends AppCompatActivity {
         alertDialog.show();
     }
 
-    // Delete user
+    // Delete a user from the database
     private void deleteUser(User user) {
-        MainActivity.userList.remove(user); // Remove the user from the list
-        Toast.makeText(this, "User " + user.getUsername() + " deleted", Toast.LENGTH_SHORT).show();
-        displayAllUsers(); // Refresh the user list
+        dbManager.deleteUser(user.getUsername());  // Delete the user by username
+        displayAllUsers();  // Refresh the list after deletion
+        Toast.makeText(this, "User deleted successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbManager.close();  // Close the database when activity is destroyed
     }
 }

@@ -50,23 +50,24 @@ public class MainActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
+
         MyDatabaseManager mydatabasemanager = new MyDatabaseManager(this);
         mydatabasemanager.open();
 
-        User user=new User("B21DCVT398", "1", "Bui Quang Thanh", "thanh@gmail.com", "0123456789", "2000-01-01", "nam");
-
-
+//        User user=new User("B21DCVT398", "1", "Bui Quang Thanh", "thanh@gmail.com", "0123456789", "2000-01-01", "nam");
+//        mydatabasemanager.insertUser(user);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                if(CheckUser(username, password)){
+                String username = usernameEditText.getText().toString().trim();
+
+                User check = mydatabasemanager.getUser(username);
+                if (check != null) {
                     Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
                     intent.putExtra("USERNAME", username);
-                    intent.putExtra("PASSWORD", password);
+
                     startActivity(intent);
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
                 }
 

@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
+import com.B21DCVT398.test.dbConnect.MyDatabaseManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.B21DCVT398.test.model.User;
@@ -120,11 +120,10 @@ public class Adduser extends AppCompatActivity {
 
                 // Create a new User object
                 User user = new User(username, password, fullname, email, phone, dobString, gender);
-
-                // Add the user to the user list (assume MainActivity has a static userList)
-                MainActivity.userList.add(user);
-
-                // Redirect to WelcomeActivity
+                MyDatabaseManager myDatabaseManager = new MyDatabaseManager(Adduser.this);
+                myDatabaseManager.open();  // Open database connection
+                myDatabaseManager.insertUser(user);
+                myDatabaseManager.close();
                 Intent intent = new Intent(Adduser.this, WelcomeActivity.class);
                 startActivity(intent);
             }
